@@ -171,14 +171,14 @@ public class FirebaseMessagingMessageSendController {
                                         String merchant_firebaseid, String user_firebaseid,
                                         String upiid, String productid, String productcost, String mobileno,
                                         String userid,String address,String orderapproval,String pickupdate,
-                                        String ordercashtype,String price,String email,String unit) throws JSONException {
+                                        String ordercashtype,String price,String email,String unit,String img) throws JSONException {
 
         Log.e("user to merchant ===>",""+dateFormat.format(date));
         JSONObject main = new JSONObject();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", "Product Order");
         jsonObject.put("body", "Product Order");
-        jsonObject.put("image", "https://cdn3.iconfinder.com/data/icons/communication-mass-media-news/512/browser_address-512.png");
+        jsonObject.put("image", img);
         jsonObject.put("message", "you received order from this customer " + nameofuser + " ,product name " + productname + " , Qantity " + quantity + "");
         jsonObject.put("nameofuser", nameofuser);
         jsonObject.put("Merchantfirebaseid", merchant_firebaseid);
@@ -247,7 +247,7 @@ public class FirebaseMessagingMessageSendController {
         Log.e("merchant to user===>",""+dateFormat.format(date));
         JSONObject main = new JSONObject();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("title", "Approval For user Request");
+        jsonObject.put("title", orderstatus+" For user Request");
         jsonObject.put("body", "Product Order Status From Merchant");
         jsonObject.put("image", "https://cdn3.iconfinder.com/data/icons/shopping-auxiliary-icons-set-2/512/Truck_Free-512.png");
         jsonObject.put("message", "Your Order updated by " + merchantname + " , order status is " + orderstatus + " for this " + productname + " product ");

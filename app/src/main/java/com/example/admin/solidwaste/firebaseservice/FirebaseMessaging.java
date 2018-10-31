@@ -31,6 +31,7 @@ import java.net.URL;
 public class FirebaseMessaging extends FirebaseMessagingService {
     private String TAG = "FirebaseMessaging";
     Bitmap bitmap;
+    String neededId;
     private static final int REQUEST_CODE = 1;
     private static final int NOTIFICATION_ID = 6578;
 
@@ -111,7 +112,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String price = remoteMessage.getData().get("price");
         String email = remoteMessage.getData().get("email");
 
-        NotificationDatabase database = Room.databaseBuilder(getApplicationContext(), NotificationDatabase.class, CommonHelper.ROOM_DBNAME).fallbackToDestructiveMigration().build();
+        NotificationDatabase database = Room.databaseBuilder(getApplicationContext(), NotificationDatabase.class, CommonHelper.ROOM_DBNAME).build();
 
         Log.e("insert into room,",TypeofUser);
         //TODO After receiving we need to call Notification class to start process
@@ -124,17 +125,18 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
 
         //Send notification from merchant to user
+        Log.e("userid==>",userid+" fdhfg");
+        Log.e("merchantid==>",merchantid+" fdhfg");
         if (TypeofUser.toLowerCase().equalsIgnoreCase("merchant")) {
 
-            Log.e("userid==>",userid+" fdhfg");
-            Log.e("merchantid==>",merchantid+" fdhfg");
 
+            neededId = "user";
             database.notificationDao().insert(new NotificationBean(1, message, datetime, false, userid, productcost,address,quantity,productid,orderapproval,OrderStatus,orderid,mobileno,
                     pickupdate,ordercashtype
-                    ,datetime,unit,user_firebaseid,price,productname,nameofuser,email));
+                    ,datetime,unit,user_firebaseid,price,productname,nameofuser,email,merchantid,imageUri));
 
 
-            sendNotificationuser(title, messagebody, bitmap, message, nameofuser, user_firebaseid, mobileno, upiid, productid, productname, productcost, quantity, datetime, userid);
+            sendNotificationuser(neededId,title, messagebody, bitmap, message, nameofuser, user_firebaseid, mobileno, upiid, productid, productname, productcost, quantity, datetime, userid,imageUri);
 
 
 
@@ -144,14 +146,14 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         }
         //Send notification from user to merchant
         else if (TypeofUser.toLowerCase().equalsIgnoreCase("user")) {
-
-            sendNotificationmerchant(title, messagebody, bitmap, message, nameofmerchant, merchant_firebaseid, OrderStatus, productid, productname, productcost, quantity, datetime, userid);
+            neededId = "merchant";
+            sendNotificationmerchant(neededId,title, messagebody, bitmap, message, nameofmerchant, merchant_firebaseid, OrderStatus, productid, productname, productcost, quantity, datetime, merchantid,imageUri);
 
 //      Log.e(TAG, "title " + title + " " + "message " + message + " " + "imageUri " + imageUri + " " + "nextActivity " + nextActivity);
 
 
-            database.notificationDao().insert(new NotificationBean(2, message, datetime, false, merchantid, productcost,address,quantity,productid,orderapproval,OrderStatus,orderid,mobileno,pickupdate,ordercashtype
-                    ,datetime,unit,user_firebaseid,price,productname,nameofuser,email));
+            database.notificationDao().insert(new NotificationBean(2, message, datetime, false, userid, productcost,address,quantity,productid,orderapproval,OrderStatus,orderid,mobileno,pickupdate,ordercashtype
+                    ,datetime,unit,user_firebaseid,price,productname,nameofuser,email,merchantid,imageUri));
 
         }
 
@@ -162,16 +164,17 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     //TODO All features Applied upto Oreo Supported to send message to users
 
 
-    private void sendNotificationuser(String title, String messagebody, Bitmap bitmap, String message,
+    private void sendNotificationuser(String type,String title, String messagebody, Bitmap bitmap, String message,
                                           String nameofuser, String firebaseid, String mobileno,
                                           String upiid, String productid, String productname,
                                           String productcost, String quantity, String datetime,
-                                          String userid) {
+                                          String userid,String img) {
 
 
         Intent intent = new Intent(this, NotificationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("title", title);
+        intent.putExtra("type", type);
         intent.putExtra("messagebody", messagebody);
         intent.putExtra("message", message);
         intent.putExtra("nameofuser", nameofuser);
@@ -184,6 +187,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         intent.putExtra("quantity", quantity);
         intent.putExtra("datetime", datetime);
         intent.putExtra("userid", userid);
+        intent.putExtra("imageUri", img);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -211,11 +215,12 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     }
 
 
-    private void sendNotificationmerchant(String title, String messagebody, Bitmap bitmap, String message, String nameofmerchant, String merchant_firebaseid, String orderStatus, String productid, String productname, String productcost, String quantity, String datetime, String userid) {
+    private void sendNotificationmerchant(String type,String title, String messagebody, Bitmap bitmap, String message, String nameofmerchant, String merchant_firebaseid, String orderStatus, String productid, String productname, String productcost, String quantity, String datetime, String userid,String imageUri) {
 
         Intent intent = new Intent(this, NotificationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("title", title);
+        intent.putExtra("type", type);
         intent.putExtra("messagebody", messagebody);
         intent.putExtra("message", message);
         intent.putExtra("nameofuser", nameofmerchant);
@@ -227,6 +232,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         intent.putExtra("quantity", quantity);
         intent.putExtra("datetime", datetime);
         intent.putExtra("userid", userid);
+        intent.putExtra("imageUri", imageUri);
 
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,

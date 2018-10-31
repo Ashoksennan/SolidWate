@@ -255,11 +255,11 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
     @Override
     public void loadData(ArrayList<MyRequestResponseResponse> myRequestResponseResponse) {
 
+        Log.e("fdx",myRequestResponseResponse.get(0).getproductimage()+"fv");
 
         shimmerFrameLayout.stopShimmerAnimation();
 
         lin_Nodata.setVisibility(View.GONE);
-
 
         ArrayList<MyRequestResponseResponse> tempElements = new ArrayList<MyRequestResponseResponse>(myRequestResponseResponse);
         Collections.reverse(tempElements);

@@ -114,7 +114,10 @@ public class UserDash_Presenter extends BasePresenter<IUserDashBoardContract.vie
 
         Log.e("vbhj",firebaseid+" oii");
 
-        return networkClient.getApiInterface(retrofit).placeOrder(productid,productname,productcost,nameofuser,address,price,email,mobile,firebaseid,quantity,unit,orderstatus,ordercashtype,orderapproval,pickupdate,userid,merchantId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return networkClient.getApiInterface(retrofit)
+                .placeOrder(productid,productname,productcost,nameofuser,address,price,email,mobile,firebaseid,quantity,unit,orderstatus,ordercashtype,orderapproval,pickupdate,userid,merchantId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -126,7 +129,7 @@ public class UserDash_Presenter extends BasePresenter<IUserDashBoardContract.vie
                 Log.e("presenter", "" + post.getMessage());
                 Log.e("presenter", "" + post.getStatusCode());
 
-                view.showMessage( post.getMessage());
+                view.showMessage( post.getMessage(),post);
 
             }
 

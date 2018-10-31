@@ -20,6 +20,9 @@ public interface NotificationDao {
     @Query("select * from NotificationBean where userid=:userid order by uid desc")
     List<NotificationBean> getNotitificationById(String userid);
 
+    @Query("select * from NotificationBean where merchantId=:merchantId order by uid desc")
+    List<NotificationBean> getNotitificationByMerchantId(String merchantId);
+
 
     @Insert
     void insert(NotificationBean notificationBeans);

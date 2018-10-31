@@ -46,6 +46,7 @@ import com.example.admin.solidwaste.di.module.NetworkClient;
 import com.example.admin.solidwaste.di.module.UserDashboardModule;
 import com.example.admin.solidwaste.fcmmessagesendcontroller.FirebaseMessagingMessageSendController;
 import com.example.admin.solidwaste.map.NearByLocationOfShop;
+import com.example.admin.solidwaste.pojo.ProductRegistrationPojo.Add_Product_Response;
 import com.example.admin.solidwaste.pojo.UserProductPojo.UserProductResponseResponse;
 import com.example.admin.solidwaste.presenter.UserModules.UserDash_Presenter;
 import com.example.admin.solidwaste.sharedprefshelper.SharedPrefModule;
@@ -580,7 +581,7 @@ public class UserDashboard extends AppCompatActivity implements IUserDashBoardCo
 
         tempUserProductResponseResponses = userProductResponseResults;
 
-        Log.e("size===>", tempUserProductResponseResponses.size() + "");
+
 
         userProductAdapter = new UserProductAdapter(UserDashboard.this, userProductResponseResults, UserDashboard.this);
         recyclerView.setAdapter(userProductAdapter);
@@ -622,7 +623,8 @@ public class UserDashboard extends AppCompatActivity implements IUserDashBoardCo
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, Add_Product_Response responseObj) {
+        Log.e("orderid==>",responseObj.getOrderid()+"");
         Toasty.success(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         FirebaseMessagingMessageSendController firebaseMessagingMessageSendController = new FirebaseMessagingMessageSendController(UserDashboard.this, networkClient, retrofit);
         try {
@@ -663,22 +665,23 @@ public class UserDashboard extends AppCompatActivity implements IUserDashBoardCo
 
             firebaseMessagingMessageSendController.SendMessageUserFirebase(
                     sharedPreferences.getString(CommonHelper.sharedpref_name, ""),"Pending",
-                    productName,"233",etQuantity.getText().toString(),
+                    productName,String.valueOf(responseObj.getOrderid()),etQuantity.getText().toString(),
                     merchantid,merchantfirebaseid
                     , refreshedToken, sharedPreferences.getString(CommonHelper.sharedpref_upino, ""),
                     String.valueOf(productid),String.valueOf(productcost),
                     sharedPreferences.getString(CommonHelper.sharedpref_mobileno, ""),sharedPreferences.getString(CommonHelper.sharedpref_userid, ""),
                     userAddress,"Pending",
                     " ","cod",String.valueOf(totprice),
-                    sharedPreferences.getString(CommonHelper.sharedpref_email, ""),userUnit
-                    );
+                    sharedPreferences.getString(CommonHelper.sharedpref_email, ""),userUnit,responseObj.getImage()
+            );
+            Log.e("from userDashBoard=>","merchant id=>"+merchantid+"user id=>"+sharedPreferences.getString(CommonHelper.sharedpref_userid, ""));
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
+
 
 
     @Override

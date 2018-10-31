@@ -34,8 +34,9 @@ public class MyRequestResponseResponse  implements Parcelable{
     private String productname;
     private String nameofuser;
     private String email;
+    private String productimage;
 
-    public MyRequestResponseResponse(String productcost, String address, String quantity, String productid, String orderstatus, int orderid, String mobile, String orderapproval, String pickupdate, String ordercashtype, String userid, String datetime, String unit, String firebaseid, String price, String productname, String nameofuser, String email) {
+    public MyRequestResponseResponse(String productcost, String address, String quantity, String productid, String orderstatus, int orderid, String mobile, String orderapproval, String pickupdate, String ordercashtype, String userid, String datetime, String unit, String firebaseid, String price, String productname, String nameofuser, String email,String productimage) {
         this.productcost = productcost;
         this.address = address;
         this.quantity = quantity;
@@ -54,6 +55,7 @@ public class MyRequestResponseResponse  implements Parcelable{
         this.productname = productname;
         this.nameofuser = nameofuser;
         this.email = email;
+        this.productimage = productimage;
     }
 
     public MyRequestResponseResponse(Parcel in) {
@@ -76,6 +78,15 @@ public class MyRequestResponseResponse  implements Parcelable{
         this.productname=in.readString();
         this.nameofuser=in.readString();
         this.email=in.readString();
+        this.productimage = in.readString();
+    }
+
+    public String getproductimage() {
+        return productimage;
+    }
+
+    public void setproductimage(String productimage) {
+        this.productimage = productimage;
     }
 
     public String getProductcost() {
@@ -248,6 +259,7 @@ public class MyRequestResponseResponse  implements Parcelable{
         dest.writeString(this.productname);
         dest.writeString(this.nameofuser);
         dest.writeString(this.email);
+        dest.writeString(this.productimage);
 
     }
 }

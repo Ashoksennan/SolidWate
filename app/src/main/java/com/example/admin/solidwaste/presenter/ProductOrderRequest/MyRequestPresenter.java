@@ -80,7 +80,7 @@ public class MyRequestPresenter extends BasePresenter<MyRequestContract.view> im
 
                     for (MyRequestResponseResponse mylist : post.getResponse().getResponse()) {
 
-                        Log.e("dhf",mylist.getUserid());
+                        Log.e("dhf",mylist.getUserid()+" "+mylist.getproductimage());
 
                         mList.add(mylist);
 

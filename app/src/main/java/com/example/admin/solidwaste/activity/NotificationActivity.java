@@ -56,7 +56,8 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     Toolbar toolbar;
 
 
-    String mUserId;
+    String mImageUrl;
+    String mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,10 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         Intent i = getIntent();
         String userid = i.getStringExtra("userid");
         String type = i.getStringExtra("type");
+        Log.e("fbhhd=>",type+"");
+        if(i.getStringExtra("imageUri")!=null){
+            mImageUrl = i.getStringExtra("imageUri");
+        }
 
         if (getIntent().getExtras() != null) {
 
@@ -115,8 +120,10 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             @Override
             public void run() {
                 NotificationDatabase database1 = Room.databaseBuilder(getApplicationContext(), NotificationDatabase.class, CommonHelper.ROOM_DBNAME).build();
-
+                if(type.equalsIgnoreCase("user"))
                 getNotificationPresenter.loadDatas(database1,userid);
+                else if(type.equalsIgnoreCase("merchant"))
+                getNotificationPresenter.loadDatasByMerchant(database1,userid);
 
                 Log.e("TAG", "merchantid"+userid);
 

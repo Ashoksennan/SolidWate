@@ -22,6 +22,10 @@ public class NotificationBean {
     boolean isviewd;
     @ColumnInfo(name = "userid")
     String userid;
+    @ColumnInfo(name = "merchantId")
+    String merchantId;
+    @ColumnInfo(name = "imageUrl")
+    String imageUrl;
     @ColumnInfo(name="productCost")
     String productCost;
     @ColumnInfo(name="Address")
@@ -67,8 +71,7 @@ public class NotificationBean {
         this.isviewd = isviewd;
         this.userid = userid;
     }
-
-    public NotificationBean(int imagid, String msg, String time, boolean isviewd, String userid, String productCost, String address, String quantity, String productid, String orderapproval, String orderstatus, String orderid, String mobile, String pickupdate, String ordercashtype, String datetime, String unit, String firebaseid, String price, String productname, String nameofuser, String email) {
+    public NotificationBean(int imagid, String msg, String time, boolean isviewd, String userid, String productCost, String address, String quantity, String productid, String orderapproval, String orderstatus, String orderid, String mobile, String pickupdate, String ordercashtype, String datetime, String unit, String firebaseid, String price, String productname, String nameofuser, String email, String merchantId, String imageUrl) {
         this.imagid = imagid;
         this.msg = msg;
         this.time = time;
@@ -81,6 +84,8 @@ public class NotificationBean {
         Orderapproval = orderapproval;
         Orderstatus = orderstatus;
         Orderid = orderid;
+        this.merchantId = merchantId;
+        this.imageUrl = imageUrl;
         Mobile = mobile;
         Pickupdate = pickupdate;
         Ordercashtype = ordercashtype;
@@ -275,5 +280,21 @@ public class NotificationBean {
 
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

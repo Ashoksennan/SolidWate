@@ -87,7 +87,8 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.Prod
                             productList.get(position).getPrice(),
                             productList.get(position).getProductname(),
                             productList.get(position).getNameofuser(),
-                            productList.get(position).getEmail()));
+                            productList.get(position).getEmail(),
+                            productList.get(position).getproductimage()));
                     context.startActivity(i);
                 }
             }

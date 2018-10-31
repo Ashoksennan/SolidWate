@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.admin.solidwaste.Interface.IFirebaseMessagingCallbackResponse;
 import com.example.admin.solidwaste.Interface.OrderUpdateContract;
 import com.example.admin.solidwaste.R;
@@ -32,11 +34,13 @@ import com.example.admin.solidwaste.presenter.AdminPresenter.OrderUpdatePresente
 import com.example.admin.solidwaste.sharedprefshelper.SharedPrefModule;
 import com.example.admin.solidwaste.utils.CommonHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 import com.vatsal.imagezoomer.ImageZoomButton;
 import com.vatsal.imagezoomer.ZoomAnimation;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -170,13 +174,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
         rp__details = (MyRequestResponseResponse) data.getParcelable("products");
 
 
-        Log.e("values ", rp__details.getDatetime()+"xfbg");
+
 
         if (rp__details.getDatetime() != null) {
             String date = parseDateToddMMyyyy(rp__details.getDatetime());
             tvDate.setText("Date : " + date);
         }
 
+
+        if(rp__details.getproductimage()!=null){
+            Log.e("url=>",rp__details.getproductimage()+" vb");
+            Glide.with(this).load(rp__details.getproductimage()).into(imProduct);
+        }else{
+            Log.e("no url=>",rp__details.getproductimage()+" vb");
+        }
 
         tvAddress.setText(rp__details.getAddress());
         tvEmail.setText(rp__details.getEmail());
@@ -189,7 +200,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
         tvTotalPrice.setText("Total Price : \u20B9 " + rp__details.getPrice());
         tvUserName.setText(rp__details.getNameofuser());
 
-
+        Log.e("values ", rp__details.getproductimage()+"xfbg");
         addOrderStatus(rp__details.getOrderstatus());
 
 

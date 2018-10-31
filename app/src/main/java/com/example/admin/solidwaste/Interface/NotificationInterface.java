@@ -16,5 +16,6 @@ public interface NotificationInterface {
     interface presenter{
         public void test();
        public void loadDatas(NotificationDatabase database,String userId);
+       public void loadDatasByMerchant(NotificationDatabase database,String userId);
     }
 }

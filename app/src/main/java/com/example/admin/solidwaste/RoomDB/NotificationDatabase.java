@@ -10,7 +10,7 @@ import com.example.admin.solidwaste.pojo.NotificationBean;
  * Created by Murugan on 12-10-2018.
  */
 
-@Database(entities = {NotificationBean.class},version = 4,exportSchema = false)
+@Database(entities = {NotificationBean.class},version = 5,exportSchema = false)
 public abstract class NotificationDatabase extends RoomDatabase {
 
 public abstract NotificationDao notificationDao();

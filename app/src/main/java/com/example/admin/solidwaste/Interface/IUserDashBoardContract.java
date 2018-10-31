@@ -1,6 +1,7 @@
 package com.example.admin.solidwaste.Interface;
 
 
+import com.example.admin.solidwaste.pojo.ProductRegistrationPojo.Add_Product_Response;
 import com.example.admin.solidwaste.pojo.UserProductPojo.UserProductResponseResponse;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public interface IUserDashBoardContract {
         void loadUserDataProduct(List<UserProductResponseResponse> userProductResponseResults);
         void loadUserDataLocation(List<UserProductResponseResponse> userProductResponseResults);
         void loadUserDataByPriceRange(List<UserProductResponseResponse> userProductResponseResults);
-        void showMessage(String message);
+        void showMessage(String message, Add_Product_Response responseObj);
 
 
     }

@@ -107,6 +107,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
               }else*/
              if(mType.equalsIgnoreCase("merchant")){
                   Log.e("vghv=>",beanList.get(position).getDatetime()+"merchant");
+                  Log.e("vghv=>",beanList.get(position).getUserid()+" getUserid");
+                  Log.e("vghv=>",beanList.get(position).getMerchantId()+" getMerchantId");
+                  Log.e("vghv=>",beanList.get(position).getImageUrl()+" getImageUrl");
                   Intent i = new Intent(context, OrderDetailsActivity.class);
 
                   i.putExtra("products", new MyRequestResponseResponse(beanList.get(position).getProductCost(),
@@ -126,7 +129,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                           beanList.get(position).getPrice(),
                           beanList.get(position).getProductname(),
                           beanList.get(position).getNameofuser(),
-                          beanList.get(position).getEmail()));
+                          beanList.get(position).getEmail(),
+                          beanList.get(position).getImageUrl()
+                          ));
                   context.startActivity(i);
               }
 
