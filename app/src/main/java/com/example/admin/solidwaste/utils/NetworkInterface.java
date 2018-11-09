@@ -147,7 +147,8 @@ public interface NetworkInterface {
                                                                   @Query("productdescription") String productDescription,
                                                                   @Query("type") String type,
                                                                   @Query("color") String color,
-                                                                  @Query("grade") String grade
+                                                                  @Query("grade") String grade,
+                                                                  @Query("enableorhide") String enableorhide
     );
 
 
@@ -171,7 +172,8 @@ public interface NetworkInterface {
                                                       @Query("productdescription") String productDescription,
                                                       @Query("type") String type,
                                                       @Query("color") String color,
-                                                      @Query("grade") String grade
+                                                      @Query("grade") String grade,
+                                                      @Query("enableorhide") String enableorhide
     );
 
 
@@ -218,6 +220,11 @@ public interface NetworkInterface {
     @GET("v1/order_type")
     @Headers("access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MzY5OTMyNjN9.Lpot7r_O2WjKfTGwUlm7PRwqgal3DW0ctsCgoBhzy9A")
     Observable<MyRequest> myOrders_user(@Query("userid") String userid);
+
+
+    @GET("v1/order_typewithOrderStatus")
+    @Headers("access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MzY5OTMyNjN9.Lpot7r_O2WjKfTGwUlm7PRwqgal3DW0ctsCgoBhzy9A")
+    Observable<MyRequest> orderstatus(@Query("orderstatus") String orderstatus,@Query("merchantid")String merchantid);
 
 
 

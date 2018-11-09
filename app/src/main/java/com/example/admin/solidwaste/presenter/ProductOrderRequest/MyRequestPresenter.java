@@ -38,20 +38,33 @@ public class MyRequestPresenter extends BasePresenter<MyRequestContract.view> im
     }
 
     @Override
+    public void loadDataByOrderStatus(String userid, String utype, String reqType) {
+        getMyRequest(userid,utype,reqType).subscribeWith(getRequestValues());
+    }
+
+    @Override
     public void loadMyData(String userid,String type) {
-            getMyRequest(userid,type).subscribeWith(getRequestValues());
+            getMyRequest(userid,type,null).subscribeWith(getRequestValues());
 
     }
 
 
-    public Observable<MyRequest> getMyRequest(String userid, String type) {
+    public Observable<MyRequest> getMyRequest(String userid, String type, String reqType) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         OkHttpClient client = builder.build();
+        Log.e("reqtype",reqType+"");
         if(type.equalsIgnoreCase("user")){
             return networkClient.getApiInterface(retrofit).myOrders_user(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         }else{
-            return networkClient.getApiInterface(retrofit).myOrders_merchant(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            if(reqType ==null){
+                return networkClient.getApiInterface(retrofit).myOrders_merchant(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            }
+            else
+            {
+                return networkClient.getApiInterface(retrofit).orderstatus(reqType,userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+
+            }
 
         }
 
@@ -69,25 +82,35 @@ public class MyRequestPresenter extends BasePresenter<MyRequestContract.view> im
             public void onNext(MyRequest post) {
 
 
-                Log.e("ewsssssss",""+post.getResponse().getResponse());
+               // Log.e("ewsssssss",""+post.getResponse().getResponse());
 
 //                if(post.getResponse().getResponse().length==0) {
 //
 //                    view.showError("No Data Found");
 //
 //                }else{
+                if (post.getResponse().getStatusCode() ==200){
                     ArrayList<MyRequestResponseResponse> mList = new ArrayList<>();
+                    if(post.getResponse().getResponse().length>0){
+                        for (MyRequestResponseResponse mylist : post.getResponse().getResponse()) {
 
-                    for (MyRequestResponseResponse mylist : post.getResponse().getResponse()) {
+                            Log.e("dhf",mylist.getUserid()+" "+mylist.getproductimage());
 
-                        Log.e("dhf",mylist.getUserid()+" "+mylist.getproductimage());
+                            mList.add(mylist);
 
-                        mList.add(mylist);
+                        }
 
+
+                        view.loadData(mList);
+                    }else{
+                        view.showResult(post.getResponse().getStatusMessage());
                     }
 
+                }else{
+                    view.showResult(post.getResponse().getStatusMessage());
+                }
 
-                    view.loadData(mList);
+
 //                }
 
                 view.hideDialog();

@@ -23,13 +23,13 @@
 
 
             <ImageView
-                android:id="@+id/im_myRequest"
+                android:id="@+id/im_collected"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_user_request" />
+                app:srcCompat="@drawable/ic_collect" />
 
 
             <View
@@ -41,13 +41,13 @@
 
 
             <ImageView
-                android:id="@+id/im_productreg"
+                android:id="@+id/im_processing"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_addproduct" />
+                app:srcCompat="@drawable/ic_process" />
 
 
         </LinearLayout>
@@ -65,7 +65,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="User Request"
+                android:text="Collected"
                 android:textAlignment="center" />
 
             <View
@@ -81,7 +81,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="Product Registration"
+                android:text="Processing"
                 android:textAlignment="center" />
 
         </LinearLayout>
@@ -104,13 +104,13 @@
 
 
             <ImageView
-                android:id="@+id/im_slabrate"
+                android:id="@+id/im_pending"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_slabrate" />
+                app:srcCompat="@drawable/ic_hourglass" />
 
             <View
                 android:layout_width="2dp"
@@ -121,13 +121,13 @@
 
 
             <ImageView
-                android:id="@+id/im_registeredproduct"
+                android:id="@+id/im_completed"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_viewproduct" />
+                app:srcCompat="@drawable/ic_done_black_24dp" />
 
 
         </LinearLayout>
@@ -145,7 +145,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="Slab Rate"
+                android:text="Pending"
                 android:textAlignment="center" />
 
             <View
@@ -161,7 +161,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="Registered Product"
+                android:text="Approved"
                 android:textAlignment="center" />
 
         </LinearLayout>

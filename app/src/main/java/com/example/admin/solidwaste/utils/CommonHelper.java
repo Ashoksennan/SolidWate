@@ -22,8 +22,8 @@ import static com.example.admin.solidwaste.di.module.NetworkClient.getHttpLoggin
 import static com.example.admin.solidwaste.di.module.NetworkClient.getOkHttpCleint;
 
 public class CommonHelper {
-
-    public static String BASE_URL = "http://paypre.info/";
+    public static String BASE_URL = "http://192.168.1.15:3000/";
+   // public static String BASE_URL = "http://paypre.info/";
     public static String GOOGLE_API_URL = "https://maps.googleapis.com/";
 
     public static Result currentResult ;

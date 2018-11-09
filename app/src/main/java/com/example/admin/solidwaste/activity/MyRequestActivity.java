@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.solidwaste.Interface.MyRequestContract;
 import com.example.admin.solidwaste.R;
@@ -57,6 +58,9 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
 
     @BindView(R.id.linNodata)
     LinearLayout lin_Nodata;
+
+    @BindView(R.id.tv_noData)
+    TextView tv_noData;
 
     MyRequestAdapter myRequestAdapter;
 
@@ -97,6 +101,8 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
     @BindView(R.id.bottom_sheet)
     LinearLayout layoutBottomSheet;
 
+    String mreqType=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,12 +128,20 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
 //        Intent i = getIntent();
 //         type = i.getStringExtra("type");
 
+        if(getIntent()!=null){
+            Intent i=getIntent();
+            mreqType = i.getStringExtra("reqType");
+        }
+
 
         pref_userId = sharedPreferences.getString(CommonHelper.sharedpref_userid, null);
 
         Log.e("TAG", "MY_REQUESTACTVITY" + sharedPreferences.getString(sharedpref_typeofuser, null));
-
-        myRequestPresenter.loadMyData(pref_userId, sharedPreferences.getString(sharedpref_typeofuser, null));
+        if(mreqType!=null){
+            myRequestPresenter.loadDataByOrderStatus(pref_userId,sharedPreferences.getString(sharedpref_typeofuser, null),mreqType);
+        }else{
+            myRequestPresenter.loadMyData(pref_userId, sharedPreferences.getString(sharedpref_typeofuser, null));
+        }
 
         dialog = new ProgressDialog(MyRequestActivity.this);
         dialog.setMessage("Loading");
@@ -255,12 +269,12 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
     @Override
     public void loadData(ArrayList<MyRequestResponseResponse> myRequestResponseResponse) {
 
-        Log.e("fdx",myRequestResponseResponse.get(0).getproductimage()+"fv");
+  //      Log.e("fdx",myRequestResponseResponse.get(0).getproductimage()+"fv");
 
         shimmerFrameLayout.stopShimmerAnimation();
 
         lin_Nodata.setVisibility(View.GONE);
-
+        tv_noData.setVisibility(View.GONE);
         ArrayList<MyRequestResponseResponse> tempElements = new ArrayList<MyRequestResponseResponse>(myRequestResponseResponse);
         Collections.reverse(tempElements);
         myfilterlist = tempElements;
@@ -310,6 +324,14 @@ public class MyRequestActivity extends AppCompatActivity implements MyRequestCon
 //        }
 
 
+    }
+
+    @Override
+    public void showResult(String msg) {
+        shimmerFrameLayout.stopShimmerAnimation();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        lin_Nodata.setVisibility(View.GONE);
+        tv_noData.setVisibility(View.VISIBLE);
     }
 
     @Override

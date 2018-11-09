@@ -72,4 +72,9 @@
     <string name="action_filter">Filter</string>
     <string name="notification">Notification</string>
 
+    <array name="switch_tabs">
+        <item name="Yes">Yes</item>
+        <item name="No">No</item>
+    </array>
+
 </resources>

@@ -61,17 +61,17 @@ public class AdminDashboard extends AppCompatActivity implements IAdminDashboard
     DrawerLayout drawerLayout;
 
 
-    @BindView(R.id.im_productreg)
-    ImageView iv_ProductRegistration;
+    @BindView(R.id.im_processing)
+    ImageView im_processing;
 
-    @BindView(R.id.im_registeredproduct)
-    ImageView iv_registeredProduct;
+    @BindView(R.id.im_completed)
+    ImageView im_completed;
 
-    @BindView(R.id.im_slabrate)
-    ImageView iv_slabRate;
+    @BindView(R.id.im_pending)
+    ImageView im_pending;
 
-    @BindView(R.id.im_myRequest)
-    ImageView iv_MyRequest;
+    @BindView(R.id.im_collected)
+    ImageView im_collected;
 
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
@@ -116,34 +116,40 @@ public class AdminDashboard extends AppCompatActivity implements IAdminDashboard
 
 
     private void initMenu() {
-        iv_ProductRegistration.setOnClickListener(new View.OnClickListener() {
+        im_processing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), NewProductActivity.class));
+                Intent i = new Intent(getApplicationContext(), MyRequestActivity.class);
+                i.putExtra("reqType", "Process");
+                startActivity(i);
             }
         });
 
-        iv_registeredProduct.setOnClickListener(new View.OnClickListener() {
+        im_completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ViewProductActivity.class));
+                Intent i = new Intent(getApplicationContext(), MyRequestActivity.class);
+                i.putExtra("reqType", "Approved");
+                startActivity(i);
             }
         });
 
-        iv_slabRate.setOnClickListener(new View.OnClickListener() {
+        im_pending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SlabRateActivity.class));
+                Intent i = new Intent(getApplicationContext(), MyRequestActivity.class);
+                i.putExtra("reqType", "Pending");
+                startActivity(i);
 
             }
         });
 //
-        iv_MyRequest.setOnClickListener(new View.OnClickListener() {
+        im_collected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent i = new Intent(getApplicationContext(), MyRequestActivity.class);
-                i.putExtra("type", "merchant");
+                i.putExtra("reqType", "Collected");
                 startActivity(i);
 
             }
@@ -176,6 +182,21 @@ public class AdminDashboard extends AppCompatActivity implements IAdminDashboard
                         Intent i = new Intent(getApplicationContext(), MyRequestActivity.class);
                         i.putExtra("type", "merchant");
                         startActivity(i);
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.registration:
+                        startActivity(new Intent(getApplicationContext(), NewProductActivity.class));
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.slabdetails:
+                        startActivity(new Intent(getApplicationContext(), SlabRateActivity.class));
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.registereddetails:
+                        startActivity(new Intent(getApplicationContext(), ViewProductActivity.class));
                         drawerLayout.closeDrawers();
                         break;
 

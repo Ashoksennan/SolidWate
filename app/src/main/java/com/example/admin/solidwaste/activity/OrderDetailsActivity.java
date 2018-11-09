@@ -2,6 +2,7 @@ package com.example.admin.solidwaste.activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -102,6 +104,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
 
     @BindView(R.id.tv_delivery_date)
     TextView tvDeliveryDate;
+    @BindView(R.id.tv_delivery_time)
+    TextView tvDeliveryTime;
 
     @BindView(R.id.btn_submit)
     Button btnSubmit;
@@ -109,6 +113,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
 
     @BindView(R.id.lin_date)
     LinearLayout linearLayoutDate;
+
+    @BindView(R.id.lin_time)
+    LinearLayout linearLayoutTime;
 
     @Inject
     SharedPreferences sharedPreferences;
@@ -212,23 +219,34 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
                     btnSubmit.setText("Order Pending");
                     btnSubmit.setEnabled(true);
                     linearLayoutDate.setVisibility(View.GONE);
+                    linearLayoutTime.setVisibility(View.GONE);
                 } else if (val.equalsIgnoreCase("Cancelled")) {
                     btnSubmit.setText("Order Cancelled");
                     btnSubmit.setEnabled(true);
                     linearLayoutDate.setVisibility(View.GONE);
+                    linearLayoutTime.setVisibility(View.GONE);
 
 
-                } else if (val.equalsIgnoreCase("Delivered")) {
+                } else if (val.equalsIgnoreCase("Collected")) {
 
 
                     btnSubmit.setText("Proceed to Payment");
                     btnSubmit.setEnabled(true);
                     linearLayoutDate.setVisibility(View.GONE);
+                    linearLayoutTime.setVisibility(View.GONE);
 
-                } else if (val.equalsIgnoreCase("Approved")) {
+                } else if (val.equalsIgnoreCase("Process")) {
                     btnSubmit.setText("Order Placed ");
                     btnSubmit.setEnabled(true);
                     linearLayoutDate.setVisibility(View.VISIBLE);
+                    linearLayoutTime.setVisibility(View.VISIBLE);
+
+                }else if (val.equalsIgnoreCase("Approved")) {
+                    btnSubmit.setText("Order Approved");
+                    btnSubmit.setEnabled(true);
+                    linearLayoutDate.setVisibility(View.GONE);
+                    linearLayoutTime.setVisibility(View.GONE);
+
 
                 }
             }
@@ -239,7 +257,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
             }
         });
 
-        if (rp__details.getOrderstatus().equalsIgnoreCase("Delivered")) {
+        if (rp__details.getOrderstatus().equalsIgnoreCase("Collected")) {
             cardVieworder.setVisibility(View.GONE);
             btnSubmit.setFocusable(false);
         } else {
@@ -269,14 +287,58 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
         datePickerDialog.getDatePicker().setMinDate(myCalendar.getTimeInMillis());
         datePickerDialog.show();
     }
+    @OnClick(R.id.tv_delivery_time)
+    public void chooseTime() {
 
+
+        // TODO Auto-generated method stub
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(OrderDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                updateTime(selectedHour,selectedMinute);
+            }
+        }, hour, minute, false);//no 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
+    }
+    // Used to convert 24hr format to 12hr format with AM/PM values
+    private void updateTime(int hours, int mins) {
+
+        String timeSet = "";
+        if (hours > 12) {
+            hours -= 12;
+            timeSet = "PM";
+        } else if (hours == 0) {
+            hours += 12;
+            timeSet = "AM";
+        } else if (hours == 12)
+            timeSet = "PM";
+        else
+            timeSet = "AM";
+
+
+        String minutes = "";
+        if (mins < 10)
+            minutes = "0" + mins;
+        else
+            minutes = String.valueOf(mins);
+
+        // Append in a StringBuilder
+        String aTime = new StringBuilder().append(hours).append(':')
+                .append(minutes).append(" ").append(timeSet).toString();
+        tvDeliveryTime.setText(aTime);
+    }
     @OnClick(R.id.btn_submit)
     public void UpdateOrder() {
-        orderPresenter.updateOrder(spinner_order_status.getSelectedItem().toString(), String.valueOf(rp__details.getOrderid()), parseDateToddMMyyyy_update(tvDeliveryDate.getText().toString()));
+        orderPresenter.updateOrder(spinner_order_status.getSelectedItem().toString(), String.valueOf(rp__details.getOrderid()), parseDateToddMMyyyy_update(tvDeliveryDate.getText().toString())+tvDeliveryTime.getText().toString());
 
         Log.e("valiueeee", "" + String.valueOf(rp__details.getOrderid()));
         Log.e("valiueeee", "" + spinner_order_status.getSelectedItem().toString());
-        if (spinner_order_status.getSelectedItem().toString().equalsIgnoreCase("Approved")) {
+        if (spinner_order_status.getSelectedItem().toString().equalsIgnoreCase("Process")) {
 
             if (tvDeliveryDate.getText().toString().equalsIgnoreCase("")) {
                 Toasty.error(getApplicationContext(), "choose date", Toast.LENGTH_SHORT).show();
@@ -285,7 +347,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
 
                 finish();*/
             }
-        } else if (spinner_order_status.getSelectedItem().toString().equalsIgnoreCase("Delivered")) {
+        } else if (spinner_order_status.getSelectedItem().toString().equalsIgnoreCase("Collected")) {
 
             Intent i = new Intent(getApplicationContext(), PaymentActivity.class);
             i.putExtra("amount", rp__details.getPrice());
@@ -301,9 +363,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
 
         ArrayList<String> orderlist = new ArrayList<>();
         orderlist.add("Cancelled");
-        orderlist.add("Delivered");
+        orderlist.add("Collected");
         orderlist.add("Approved");
-        orderlist.add("pending");
+        orderlist.add("Pending");
+        orderlist.add("Process");
 
 
         ArrayAdapter<String> orderAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, orderlist);
@@ -318,6 +381,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderUpda
 
         if (spinnerPosition == 3) {
             linearLayoutDate.setVisibility(View.GONE);
+            linearLayoutTime.setVisibility(View.GONE);
 
         }
 

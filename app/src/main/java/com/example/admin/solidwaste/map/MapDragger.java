@@ -120,7 +120,7 @@ public class MapDragger extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View v) {
 
 
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(MapDragger.this,R.style.MyAlertDialogTheme);
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(MapDragger.this);
                 builder1.setMessage("Are you want to store this location as your shop");
                 builder1.setCancelable(true);
 

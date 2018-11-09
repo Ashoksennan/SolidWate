@@ -117,6 +117,8 @@ public class LoginPresenter extends BasePresenter<LoginActivityContract.ILoginVi
                         @Override
                         public void accept(Login_Response response) throws Exception {
 
+
+
                             Log.e(TAG, "res" + response.getResponse().StatusCode);
 
                             if (response.getResponse().getStatusCode() == 200) {
